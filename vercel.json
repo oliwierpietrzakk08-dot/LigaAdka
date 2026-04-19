@@ -1,0 +1,7 @@
+{
+  "name": "liga-adka",
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "/api/:path*" },
+    { "source": "/(.*)",       "destination": "/$1" }
+  ]
+}
