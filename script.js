@@ -31,68 +31,165 @@ const MOCK_KLUBY = [
   { id:20, nazwa:'Mops z Bielawy',           grupa:'B', mecze:0, wygrane:0, remisy:0, porazki:0, bramki_zdobyte:0, bramki_stracone:0, punkty:0 },
 ];
 
-const MOCK_WYNIKI = [
-  // ── GRUPA A ── (brak wyników — sezon startuje 25.04.2026)
-  { kolejka:1, grupa:'A', data:'25.04.2026', gospodarz:'Sportowa Domanka',  gosc:'ZKS Zatorze',            gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:1, grupa:'A', data:'25.04.2026', gospodarz:'FC Rails',          gosc:'Monster Kiernozia',      gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:1, grupa:'A', data:'25.04.2026', gospodarz:'Popowiacy',         gosc:'Marvex Łowicz',          gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:1, grupa:'A', data:'25.04.2026', gospodarz:'JKM Łowicz',       gosc:'Latino Boys',            gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:1, grupa:'A', data:'25.04.2026', gospodarz:'Orły Shiltona',    gosc:'FC Skowroda',            gole_gospodarz:'', gole_gosc:'' },
+// ── STAŁY TERMINARZ ─────────────────────────────────────
+// Wyniki nakładane dynamicznie z /api/sheets?sheet=wyniki
 
-  { kolejka:2, grupa:'A', data:'02.05.2026', gospodarz:'Sportowa Domanka',  gosc:'Monster Kiernozia',      gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:2, grupa:'A', data:'02.05.2026', gospodarz:'FC Rails',          gosc:'Marvex Łowicz',          gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:2, grupa:'A', data:'02.05.2026', gospodarz:'Popowiacy',         gosc:'Latino Boys',            gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:2, grupa:'A', data:'02.05.2026', gospodarz:'JKM Łowicz',       gosc:'FC Skowroda',            gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:2, grupa:'A', data:'02.05.2026', gospodarz:'Orły Shiltona',    gosc:'ZKS Zatorze',            gole_gospodarz:'', gole_gosc:'' },
+const TERMINARZ = [
 
-  { kolejka:3, grupa:'A', data:'09.05.2026', gospodarz:'Sportowa Domanka',  gosc:'Marvex Łowicz',          gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:3, grupa:'A', data:'09.05.2026', gospodarz:'FC Rails',          gosc:'Latino Boys',            gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:3, grupa:'A', data:'09.05.2026', gospodarz:'Popowiacy',         gosc:'FC Skowroda',            gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:3, grupa:'A', data:'09.05.2026', gospodarz:'JKM Łowicz',       gosc:'ZKS Zatorze',            gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:3, grupa:'A', data:'09.05.2026', gospodarz:'Orły Shiltona',    gosc:'Monster Kiernozia',      gole_gospodarz:'', gole_gosc:'' },
+  // ── GRUPA A ──────────────────────────────────────────
 
-  { kolejka:4, grupa:'A', data:'16.05.2026', gospodarz:'Sportowa Domanka',  gosc:'Latino Boys',            gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:4, grupa:'A', data:'16.05.2026', gospodarz:'FC Rails',          gosc:'FC Skowroda',            gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:4, grupa:'A', data:'16.05.2026', gospodarz:'Popowiacy',         gosc:'ZKS Zatorze',            gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:4, grupa:'A', data:'16.05.2026', gospodarz:'JKM Łowicz',       gosc:'Monster Kiernozia',      gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:4, grupa:'A', data:'16.05.2026', gospodarz:'Orły Shiltona',    gosc:'Marvex Łowicz',          gole_gospodarz:'', gole_gosc:'' },
+  // Kolejka 1 — Niedziela 26.04.2026
+  { kolejka:1, grupa:'A', data:'26.04.2026', godz:'13:00', gospodarz:'Sportowa Domanka', gosc:'Latino Boys' },
+  { kolejka:1, grupa:'A', data:'26.04.2026', godz:'14:00', gospodarz:'FC Rails',          gosc:'Marvex Łowicz' },
+  { kolejka:1, grupa:'A', data:'26.04.2026', godz:'15:00', gospodarz:'Popowiacy',         gosc:'FC Skowroda' },
+  { kolejka:1, grupa:'A', data:'26.04.2026', godz:'16:00', gospodarz:'JKM Łowicz',       gosc:'Orły Shiltona' },
+  { kolejka:1, grupa:'A', data:'26.04.2026', godz:'17:00', gospodarz:'ZKS Zatorze',      gosc:'Monster Kiernozia' },
 
-  { kolejka:5, grupa:'A', data:'23.05.2026', gospodarz:'Sportowa Domanka',  gosc:'FC Skowroda',            gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:5, grupa:'A', data:'23.05.2026', gospodarz:'FC Rails',          gosc:'ZKS Zatorze',            gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:5, grupa:'A', data:'23.05.2026', gospodarz:'Popowiacy',         gosc:'Monster Kiernozia',      gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:5, grupa:'A', data:'23.05.2026', gospodarz:'JKM Łowicz',       gosc:'Marvex Łowicz',          gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:5, grupa:'A', data:'23.05.2026', gospodarz:'Orły Shiltona',    gosc:'Latino Boys',            gole_gospodarz:'', gole_gosc:'' },
+  // Kolejka 2 — Sobota 02.05.2026
+  { kolejka:2, grupa:'A', data:'02.05.2026', godz:'13:00', gospodarz:'Sportowa Domanka', gosc:'Marvex Łowicz' },
+  { kolejka:2, grupa:'A', data:'02.05.2026', godz:'14:00', gospodarz:'Latino Boys',      gosc:'FC Skowroda' },
+  { kolejka:2, grupa:'A', data:'02.05.2026', godz:'15:00', gospodarz:'FC Rails',          gosc:'Orły Shiltona' },
+  { kolejka:2, grupa:'A', data:'02.05.2026', godz:'16:00', gospodarz:'Popowiacy',         gosc:'Monster Kiernozia' },
+  { kolejka:2, grupa:'A', data:'02.05.2026', godz:'17:00', gospodarz:'JKM Łowicz',       gosc:'ZKS Zatorze' },
 
-  // ── GRUPA B ──
-  { kolejka:1, grupa:'B', data:'25.04.2026', gospodarz:'WKS Bratki',              gosc:'Asy z B-klasy',          gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:1, grupa:'B', data:'25.04.2026', gospodarz:'KS Adek',                 gosc:'NTP Przedmieście',       gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:1, grupa:'B', data:'25.04.2026', gospodarz:'KS Stefan',               gosc:'FC Pivko',               gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:1, grupa:'B', data:'25.04.2026', gospodarz:'Parado no Bailão Górki',  gosc:'MSP',                    gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:1, grupa:'B', data:'25.04.2026', gospodarz:'Browar Bednary',          gosc:'Mops z Bielawy',         gole_gospodarz:'', gole_gosc:'' },
+  // Kolejka 3 — Sobota 09.05.2026
+  { kolejka:3, grupa:'A', data:'09.05.2026', godz:'13:00', gospodarz:'Sportowa Domanka', gosc:'FC Skowroda' },
+  { kolejka:3, grupa:'A', data:'09.05.2026', godz:'14:00', gospodarz:'Marvex Łowicz',    gosc:'Orły Shiltona' },
+  { kolejka:3, grupa:'A', data:'09.05.2026', godz:'15:00', gospodarz:'Latino Boys',      gosc:'Monster Kiernozia' },
+  { kolejka:3, grupa:'A', data:'09.05.2026', godz:'16:00', gospodarz:'FC Rails',          gosc:'ZKS Zatorze' },
+  { kolejka:3, grupa:'A', data:'09.05.2026', godz:'17:00', gospodarz:'Popowiacy',         gosc:'JKM Łowicz' },
 
-  { kolejka:2, grupa:'B', data:'02.05.2026', gospodarz:'WKS Bratki',              gosc:'NTP Przedmieście',       gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:2, grupa:'B', data:'02.05.2026', gospodarz:'KS Adek',                 gosc:'FC Pivko',               gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:2, grupa:'B', data:'02.05.2026', gospodarz:'KS Stefan',               gosc:'MSP',                    gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:2, grupa:'B', data:'02.05.2026', gospodarz:'Parado no Bailão Górki',  gosc:'Mops z Bielawy',         gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:2, grupa:'B', data:'02.05.2026', gospodarz:'Browar Bednary',          gosc:'Asy z B-klasy',          gole_gospodarz:'', gole_gosc:'' },
+  // Kolejka 4 — Sobota 16.05.2026
+  { kolejka:4, grupa:'A', data:'16.05.2026', godz:'13:00', gospodarz:'Sportowa Domanka', gosc:'Orły Shiltona' },
+  { kolejka:4, grupa:'A', data:'16.05.2026', godz:'14:00', gospodarz:'FC Skowroda',      gosc:'Monster Kiernozia' },
+  { kolejka:4, grupa:'A', data:'16.05.2026', godz:'15:00', gospodarz:'Marvex Łowicz',    gosc:'ZKS Zatorze' },
+  { kolejka:4, grupa:'A', data:'16.05.2026', godz:'16:00', gospodarz:'Latino Boys',      gosc:'JKM Łowicz' },
+  { kolejka:4, grupa:'A', data:'16.05.2026', godz:'17:00', gospodarz:'FC Rails',          gosc:'Popowiacy' },
 
-  { kolejka:3, grupa:'B', data:'09.05.2026', gospodarz:'WKS Bratki',              gosc:'FC Pivko',               gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:3, grupa:'B', data:'09.05.2026', gospodarz:'KS Adek',                 gosc:'MSP',                    gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:3, grupa:'B', data:'09.05.2026', gospodarz:'KS Stefan',               gosc:'Mops z Bielawy',         gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:3, grupa:'B', data:'09.05.2026', gospodarz:'Parado no Bailão Górki',  gosc:'Asy z B-klasy',          gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:3, grupa:'B', data:'09.05.2026', gospodarz:'Browar Bednary',          gosc:'NTP Przedmieście',       gole_gospodarz:'', gole_gosc:'' },
+  // Kolejka 5 — Sobota 23.05.2026
+  { kolejka:5, grupa:'A', data:'23.05.2026', godz:'13:00', gospodarz:'Sportowa Domanka', gosc:'Monster Kiernozia' },
+  { kolejka:5, grupa:'A', data:'23.05.2026', godz:'14:00', gospodarz:'Orły Shiltona',    gosc:'ZKS Zatorze' },
+  { kolejka:5, grupa:'A', data:'23.05.2026', godz:'15:00', gospodarz:'FC Skowroda',      gosc:'JKM Łowicz' },
+  { kolejka:5, grupa:'A', data:'23.05.2026', godz:'16:00', gospodarz:'Marvex Łowicz',    gosc:'Popowiacy' },
+  { kolejka:5, grupa:'A', data:'23.05.2026', godz:'17:00', gospodarz:'Latino Boys',      gosc:'FC Rails' },
 
-  { kolejka:4, grupa:'B', data:'16.05.2026', gospodarz:'WKS Bratki',              gosc:'MSP',                    gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:4, grupa:'B', data:'16.05.2026', gospodarz:'KS Adek',                 gosc:'Mops z Bielawy',         gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:4, grupa:'B', data:'16.05.2026', gospodarz:'KS Stefan',               gosc:'Asy z B-klasy',          gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:4, grupa:'B', data:'16.05.2026', gospodarz:'Parado no Bailão Górki',  gosc:'NTP Przedmieście',       gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:4, grupa:'B', data:'16.05.2026', gospodarz:'Browar Bednary',          gosc:'FC Pivko',               gole_gospodarz:'', gole_gosc:'' },
+  // Kolejka 6 — Sobota 30.05.2026
+  { kolejka:6, grupa:'A', data:'30.05.2026', godz:'13:00', gospodarz:'Sportowa Domanka', gosc:'ZKS Zatorze' },
+  { kolejka:6, grupa:'A', data:'30.05.2026', godz:'14:00', gospodarz:'Monster Kiernozia', gosc:'JKM Łowicz' },
+  { kolejka:6, grupa:'A', data:'30.05.2026', godz:'15:00', gospodarz:'Orły Shiltona',    gosc:'Popowiacy' },
+  { kolejka:6, grupa:'A', data:'30.05.2026', godz:'16:00', gospodarz:'FC Skowroda',      gosc:'FC Rails' },
+  { kolejka:6, grupa:'A', data:'30.05.2026', godz:'17:00', gospodarz:'Marvex Łowicz',    gosc:'Latino Boys' },
 
-  { kolejka:5, grupa:'B', data:'23.05.2026', gospodarz:'WKS Bratki',              gosc:'Mops z Bielawy',         gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:5, grupa:'B', data:'23.05.2026', gospodarz:'KS Adek',                 gosc:'Asy z B-klasy',          gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:5, grupa:'B', data:'23.05.2026', gospodarz:'KS Stefan',               gosc:'NTP Przedmieście',       gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:5, grupa:'B', data:'23.05.2026', gospodarz:'Parado no Bailão Górki',  gosc:'FC Pivko',               gole_gospodarz:'', gole_gosc:'' },
-  { kolejka:5, grupa:'B', data:'23.05.2026', gospodarz:'Browar Bednary',          gosc:'MSP',                    gole_gospodarz:'', gole_gosc:'' },
+  // Kolejka 7 — Sobota 06.06.2026
+  { kolejka:7, grupa:'A', data:'06.06.2026', godz:'13:00', gospodarz:'Sportowa Domanka', gosc:'JKM Łowicz' },
+  { kolejka:7, grupa:'A', data:'06.06.2026', godz:'14:00', gospodarz:'ZKS Zatorze',      gosc:'Popowiacy' },
+  { kolejka:7, grupa:'A', data:'06.06.2026', godz:'15:00', gospodarz:'Monster Kiernozia', gosc:'FC Rails' },
+  { kolejka:7, grupa:'A', data:'06.06.2026', godz:'16:00', gospodarz:'Orły Shiltona',    gosc:'Latino Boys' },
+  { kolejka:7, grupa:'A', data:'06.06.2026', godz:'17:00', gospodarz:'FC Skowroda',      gosc:'Marvex Łowicz' },
+
+  // Kolejka 8 — Sobota 13.06.2026
+  { kolejka:8, grupa:'A', data:'13.06.2026', godz:'13:00', gospodarz:'Sportowa Domanka', gosc:'Popowiacy' },
+  { kolejka:8, grupa:'A', data:'13.06.2026', godz:'14:00', gospodarz:'JKM Łowicz',       gosc:'FC Rails' },
+  { kolejka:8, grupa:'A', data:'13.06.2026', godz:'15:00', gospodarz:'ZKS Zatorze',      gosc:'Latino Boys' },
+  { kolejka:8, grupa:'A', data:'13.06.2026', godz:'16:00', gospodarz:'Monster Kiernozia', gosc:'Marvex Łowicz' },
+  { kolejka:8, grupa:'A', data:'13.06.2026', godz:'17:00', gospodarz:'Orły Shiltona',    gosc:'FC Skowroda' },
+
+  // Kolejka 9 — Sobota 20.06.2026
+  { kolejka:9, grupa:'A', data:'20.06.2026', godz:'13:00', gospodarz:'Sportowa Domanka', gosc:'FC Rails' },
+  { kolejka:9, grupa:'A', data:'20.06.2026', godz:'14:00', gospodarz:'Popowiacy',         gosc:'Latino Boys' },
+  { kolejka:9, grupa:'A', data:'20.06.2026', godz:'15:00', gospodarz:'JKM Łowicz',       gosc:'Marvex Łowicz' },
+  { kolejka:9, grupa:'A', data:'20.06.2026', godz:'16:00', gospodarz:'ZKS Zatorze',      gosc:'FC Skowroda' },
+  { kolejka:9, grupa:'A', data:'20.06.2026', godz:'17:00', gospodarz:'Monster Kiernozia', gosc:'Orły Shiltona' },
+
+  // ── GRUPA B ──────────────────────────────────────────
+
+  // Kolejka 1 — Sobota 25.04.2026
+  { kolejka:1, grupa:'B', data:'25.04.2026', godz:'13:00', gospodarz:'Asy z B-klasy',           gosc:'Browar Bednary' },
+  { kolejka:1, grupa:'B', data:'25.04.2026', godz:'14:00', gospodarz:'KS Stefan',               gosc:'MSP' },
+  { kolejka:1, grupa:'B', data:'25.04.2026', godz:'15:00', gospodarz:'KS Adek',                 gosc:'NTP Przedmieście' },
+  { kolejka:1, grupa:'B', data:'25.04.2026', godz:'16:00', gospodarz:'Parado no Bailão Górki',  gosc:'Mops z Bielawy' },
+  { kolejka:1, grupa:'B', data:'25.04.2026', godz:'17:00', gospodarz:'WKS Bratki',              gosc:'FC Pivko' },
+  { kolejka:1, grupa:'B', data:'25.04.2026', godz:'—',     gospodarz:'FC Zatorze',              gosc:'PAUZA' },
+
+  // Kolejka 2 — Niedziela 03.05.2026
+  { kolejka:2, grupa:'B', data:'03.05.2026', godz:'13:00', gospodarz:'Asy z B-klasy',           gosc:'MSP' },
+  { kolejka:2, grupa:'B', data:'03.05.2026', godz:'14:00', gospodarz:'Browar Bednary',          gosc:'NTP Przedmieście' },
+  { kolejka:2, grupa:'B', data:'03.05.2026', godz:'15:00', gospodarz:'KS Stefan',               gosc:'Mops z Bielawy' },
+  { kolejka:2, grupa:'B', data:'03.05.2026', godz:'16:00', gospodarz:'KS Adek',                 gosc:'FC Pivko' },
+  { kolejka:2, grupa:'B', data:'03.05.2026', godz:'17:00', gospodarz:'WKS Bratki',              gosc:'FC Zatorze' },
+  { kolejka:2, grupa:'B', data:'03.05.2026', godz:'—',     gospodarz:'Parado no Bailão Górki',  gosc:'PAUZA' },
+
+  // Kolejka 3 — Niedziela 10.05.2026
+  { kolejka:3, grupa:'B', data:'10.05.2026', godz:'13:00', gospodarz:'Asy z B-klasy',           gosc:'NTP Przedmieście' },
+  { kolejka:3, grupa:'B', data:'10.05.2026', godz:'14:00', gospodarz:'MSP',                     gosc:'Mops z Bielawy' },
+  { kolejka:3, grupa:'B', data:'10.05.2026', godz:'15:00', gospodarz:'Browar Bednary',          gosc:'FC Pivko' },
+  { kolejka:3, grupa:'B', data:'10.05.2026', godz:'16:00', gospodarz:'KS Adek',                 gosc:'FC Zatorze' },
+  { kolejka:3, grupa:'B', data:'10.05.2026', godz:'17:00', gospodarz:'Parado no Bailão Górki',  gosc:'WKS Bratki' },
+  { kolejka:3, grupa:'B', data:'10.05.2026', godz:'—',     gospodarz:'KS Stefan',               gosc:'PAUZA' },
+
+  // Kolejka 4 — Niedziela 17.05.2026
+  { kolejka:4, grupa:'B', data:'17.05.2026', godz:'13:00', gospodarz:'Asy z B-klasy',           gosc:'Mops z Bielawy' },
+  { kolejka:4, grupa:'B', data:'17.05.2026', godz:'14:00', gospodarz:'NTP Przedmieście',        gosc:'FC Pivko' },
+  { kolejka:4, grupa:'B', data:'17.05.2026', godz:'15:00', gospodarz:'Browar Bednary',          gosc:'FC Zatorze' },
+  { kolejka:4, grupa:'B', data:'17.05.2026', godz:'16:00', gospodarz:'KS Stefan',               gosc:'WKS Bratki' },
+  { kolejka:4, grupa:'B', data:'17.05.2026', godz:'17:00', gospodarz:'KS Adek',                 gosc:'Parado no Bailão Górki' },
+  { kolejka:4, grupa:'B', data:'17.05.2026', godz:'—',     gospodarz:'MSP',                     gosc:'PAUZA' },
+
+  // Kolejka 5 — Niedziela 24.05.2026
+  { kolejka:5, grupa:'B', data:'24.05.2026', godz:'13:00', gospodarz:'Asy z B-klasy',           gosc:'FC Pivko' },
+  { kolejka:5, grupa:'B', data:'24.05.2026', godz:'14:00', gospodarz:'NTP Przedmieście',        gosc:'FC Zatorze' },
+  { kolejka:5, grupa:'B', data:'24.05.2026', godz:'15:00', gospodarz:'MSP',                     gosc:'WKS Bratki' },
+  { kolejka:5, grupa:'B', data:'24.05.2026', godz:'16:00', gospodarz:'Browar Bednary',          gosc:'Parado no Bailão Górki' },
+  { kolejka:5, grupa:'B', data:'24.05.2026', godz:'17:00', gospodarz:'KS Stefan',               gosc:'KS Adek' },
+  { kolejka:5, grupa:'B', data:'24.05.2026', godz:'—',     gospodarz:'Mops z Bielawy',          gosc:'PAUZA' },
+
+  // Kolejka 6 — Niedziela 31.05.2026
+  { kolejka:6, grupa:'B', data:'31.05.2026', godz:'13:00', gospodarz:'FC Pivko',                gosc:'FC Zatorze' },
+  { kolejka:6, grupa:'B', data:'31.05.2026', godz:'14:00', gospodarz:'Mops z Bielawy',          gosc:'WKS Bratki' },
+  { kolejka:6, grupa:'B', data:'31.05.2026', godz:'15:00', gospodarz:'NTP Przedmieście',        gosc:'Parado no Bailão Górki' },
+  { kolejka:6, grupa:'B', data:'31.05.2026', godz:'16:00', gospodarz:'MSP',                     gosc:'KS Adek' },
+  { kolejka:6, grupa:'B', data:'31.05.2026', godz:'17:00', gospodarz:'Browar Bednary',          gosc:'KS Stefan' },
+  { kolejka:6, grupa:'B', data:'31.05.2026', godz:'—',     gospodarz:'Asy z B-klasy',           gosc:'PAUZA' },
+
+  // Kolejka 7 — Niedziela 07.06.2026
+  { kolejka:7, grupa:'B', data:'07.06.2026', godz:'13:00', gospodarz:'Asy z B-klasy',           gosc:'FC Zatorze' },
+  { kolejka:7, grupa:'B', data:'07.06.2026', godz:'14:00', gospodarz:'FC Pivko',                gosc:'Parado no Bailão Górki' },
+  { kolejka:7, grupa:'B', data:'07.06.2026', godz:'15:00', gospodarz:'Mops z Bielawy',          gosc:'KS Adek' },
+  { kolejka:7, grupa:'B', data:'07.06.2026', godz:'16:00', gospodarz:'NTP Przedmieście',        gosc:'KS Stefan' },
+  { kolejka:7, grupa:'B', data:'07.06.2026', godz:'17:00', gospodarz:'MSP',                     gosc:'Browar Bednary' },
+  { kolejka:7, grupa:'B', data:'07.06.2026', godz:'—',     gospodarz:'WKS Bratki',              gosc:'PAUZA' },
+
+  // Kolejka 8 — Niedziela 14.06.2026
+  { kolejka:8, grupa:'B', data:'14.06.2026', godz:'13:00', gospodarz:'Asy z B-klasy',           gosc:'WKS Bratki' },
+  { kolejka:8, grupa:'B', data:'14.06.2026', godz:'14:00', gospodarz:'FC Zatorze',              gosc:'Parado no Bailão Górki' },
+  { kolejka:8, grupa:'B', data:'14.06.2026', godz:'15:00', gospodarz:'FC Pivko',                gosc:'KS Stefan' },
+  { kolejka:8, grupa:'B', data:'14.06.2026', godz:'16:00', gospodarz:'Mops z Bielawy',          gosc:'Browar Bednary' },
+  { kolejka:8, grupa:'B', data:'14.06.2026', godz:'17:00', gospodarz:'NTP Przedmieście',        gosc:'MSP' },
+  { kolejka:8, grupa:'B', data:'14.06.2026', godz:'—',     gospodarz:'KS Adek',                 gosc:'PAUZA' },
+
+  // Kolejka 9 — Niedziela 21.06.2026
+  { kolejka:9, grupa:'B', data:'21.06.2026', godz:'13:00', gospodarz:'Asy z B-klasy',           gosc:'Parado no Bailão Górki' },
+  { kolejka:9, grupa:'B', data:'21.06.2026', godz:'14:00', gospodarz:'WKS Bratki',              gosc:'KS Adek' },
+  { kolejka:9, grupa:'B', data:'21.06.2026', godz:'15:00', gospodarz:'FC Zatorze',              gosc:'KS Stefan' },
+  { kolejka:9, grupa:'B', data:'21.06.2026', godz:'16:00', gospodarz:'FC Pivko',                gosc:'MSP' },
+  { kolejka:9, grupa:'B', data:'21.06.2026', godz:'17:00', gospodarz:'Mops z Bielawy',          gosc:'NTP Przedmieście' },
+  { kolejka:9, grupa:'B', data:'21.06.2026', godz:'—',     gospodarz:'Browar Bednary',          gosc:'PAUZA' },
+
+  // Kolejka 10 — Niedziela 28.06.2026
+  { kolejka:10, grupa:'B', data:'28.06.2026', godz:'13:00', gospodarz:'Asy z B-klasy',          gosc:'KS Adek' },
+  { kolejka:10, grupa:'B', data:'28.06.2026', godz:'14:00', gospodarz:'Parado no Bailão Górki', gosc:'KS Stefan' },
+  { kolejka:10, grupa:'B', data:'28.06.2026', godz:'15:00', gospodarz:'WKS Bratki',             gosc:'Browar Bednary' },
+  { kolejka:10, grupa:'B', data:'28.06.2026', godz:'16:00', gospodarz:'FC Zatorze',             gosc:'MSP' },
+  { kolejka:10, grupa:'B', data:'28.06.2026', godz:'17:00', gospodarz:'FC Pivko',               gosc:'Mops z Bielawy' },
+  { kolejka:10, grupa:'B', data:'28.06.2026', godz:'—',     gospodarz:'NTP Przedmieście',       gosc:'PAUZA' },
+
+  // Kolejka 11 — Niedziela 05.07.2026
+  { kolejka:11, grupa:'B', data:'05.07.2026', godz:'13:00', gospodarz:'Asy z B-klasy',          gosc:'KS Stefan' },
+  { kolejka:11, grupa:'B', data:'05.07.2026', godz:'14:00', gospodarz:'KS Adek',                gosc:'Browar Bednary' },
+  { kolejka:11, grupa:'B', data:'05.07.2026', godz:'15:00', gospodarz:'Parado no Bailão Górki', gosc:'MSP' },
+  { kolejka:11, grupa:'B', data:'05.07.2026', godz:'16:00', gospodarz:'WKS Bratki',             gosc:'NTP Przedmieście' },
+  { kolejka:11, grupa:'B', data:'05.07.2026', godz:'17:00', gospodarz:'FC Zatorze',             gosc:'Mops z Bielawy' },
+  { kolejka:11, grupa:'B', data:'05.07.2026', godz:'—',     gospodarz:'FC Pivko',               gosc:'PAUZA' },
 ];
 
 // Zawodnicy – ładowane z Google Sheets (zakładka "zawodnicy")
@@ -190,6 +287,25 @@ function roundBadgeHTML(rounds, activeKey) {
   if (hasToday)  return `<span class="round-badge today-badge-round">● Dzisiaj</span>`;
   if (!allPast)  return `<span class="round-badge upcoming-badge">Nadchodzi</span>`;
   return `<span class="round-badge past-badge">Zakończona</span>`;
+}
+
+// ── MERGE RESULTS INTO TERMINARZ ────────────────────────
+/**
+ * Nakłada wyniki z arkusza na stały terminarz.
+ * Dopasowanie po: gospodarz + gosc + kolejka + grupa
+ */
+function mergeResults(terminarz, wyniki) {
+  return terminarz.map(m => {
+    const r = wyniki.find(w =>
+      String(w.gospodarz).trim() === String(m.gospodarz).trim() &&
+      String(w.gosc).trim()      === String(m.gosc).trim()      &&
+      Number(w.kolejka)          === Number(m.kolejka)           &&
+      String(w.grupa).trim()     === String(m.grupa).trim()
+    );
+    return r
+      ? { ...m, gole_gospodarz: r.gole_gospodarz ?? '', gole_gosc: r.gole_gosc ?? '' }
+      : { ...m, gole_gospodarz: '', gole_gosc: '' };
+  });
 }
 
 // ── FETCH ───────────────────────────────────────────────
@@ -553,16 +669,15 @@ async function initMecze() {
 
   showSpinner(cA); showSpinner(cB);
 
-  let data;
+  let wyniki = [];
   try {
-    data = await fetchSheet('wyniki');
-    if (!Array.isArray(data) || !data.length) throw new Error('empty');
-  } catch {
-    data = MOCK_WYNIKI;
-  }
+    const data = await fetchSheet('wyniki');
+    if (Array.isArray(data)) wyniki = data;
+  } catch { /* brak wyników — terminarz bez wyników */ }
 
-  renderRoundNavigator(data.filter(r => r.grupa === 'A'), cA);
-  renderRoundNavigator(data.filter(r => r.grupa === 'B'), cB);
+  const merged = mergeResults(TERMINARZ, wyniki);
+  renderRoundNavigator(merged.filter(r => r.grupa === 'A'), cA);
+  renderRoundNavigator(merged.filter(r => r.grupa === 'B'), cB);
 }
 
 function renderRoundNavigator(rows, container) {
@@ -599,14 +714,15 @@ function renderRoundNavigator(rows, container) {
         </button>
       </div>`;
 
-    // ── match cards
-    matches.forEach(m => {
-      const st    = matchStatus(m.data);
-      const gh    = m.gole_gospodarz;
-      const gg    = m.gole_gosc;
+    // ── match cards (skip PAUZA)
+    matches.filter(m => m.gosc !== 'PAUZA').forEach(m => {
+      const st       = matchStatus(m.data);
+      const gh       = m.gole_gospodarz;
+      const gg       = m.gole_gosc;
       const hasScore = gh !== '' && gh != null && gg !== '' && gg != null;
-      const score = hasScore ? `${gh}–${gg}` : 'vs';
-      const label = smartDateLabel(m.data);
+      const score    = hasScore ? `${gh}–${gg}` : 'vs';
+      const godz     = m.godz && m.godz !== '—' ? ` · ${m.godz}` : '';
+      const label    = smartDateLabel(m.data);
       const todayTag = st === 'today' ? `<span class="today-label">DZISIAJ</span>` : '';
       const cardStyle = hasScore
         ? 'background:#fff;cursor:pointer'
@@ -616,7 +732,7 @@ function renderRoundNavigator(rows, container) {
         : '';
 
       html += `<div class="match-card status-${st}" style="${cardStyle}"${clickAttrs}>
-        <span class="match-date">${label}${todayTag}</span>
+        <span class="match-date">${label}${godz}${todayTag}</span>
         <span class="match-home">${m.gospodarz ?? ''}</span>
         <span class="match-score ${hasScore ? '' : 'pending'}">${score}</span>
         <span class="match-away">${m.gosc ?? ''}</span>
@@ -676,16 +792,15 @@ async function initIndexRound() {
   if (!container) return;
   showSpinner(container);
 
-  let data;
+  let wyniki = [];
   try {
-    data = await fetchSheet('wyniki');
-    if (!Array.isArray(data) || !data.length) throw new Error('empty');
-  } catch {
-    data = MOCK_WYNIKI;
-  }
+    const data = await fetchSheet('wyniki');
+    if (Array.isArray(data)) wyniki = data;
+  } catch { /* terminarz bez wyników */ }
 
-  const dataA = data.filter(r => r.grupa === 'A');
-  const dataB = data.filter(r => r.grupa === 'B');
+  const merged = mergeResults(TERMINARZ, wyniki);
+  const dataA  = merged.filter(r => r.grupa === 'A' && r.gosc !== 'PAUZA');
+  const dataB  = merged.filter(r => r.grupa === 'B' && r.gosc !== 'PAUZA');
   const roundA = detectCurrentRound(dataA);
   const roundB = detectCurrentRound(dataB);
   const matchesA = dataA.filter(r => Number(r.kolejka) === roundA);
@@ -707,10 +822,11 @@ async function initIndexRound() {
       const gh = m.gole_gospodarz;
       const gg = m.gole_gosc;
       const hasScore = gh !== '' && gh != null && gg !== '' && gg != null;
-      const score = hasScore ? `${gh}–${gg}` : 'vs';
+      const score    = hasScore ? `${gh}–${gg}` : 'vs';
+      const godz     = m.godz && m.godz !== '—' ? ` · ${m.godz}` : '';
       const cardStyle = hasScore ? 'background:#fff' : 'background:#f0f0f0;opacity:0.85';
       return `<div class="match-card status-${st}" style="${cardStyle}">
-        <span class="match-date">${smartDateLabel(m.data)}${st === 'today' ? '<span class="today-label">DZISIAJ</span>' : ''}</span>
+        <span class="match-date">${smartDateLabel(m.data)}${godz}${st === 'today' ? '<span class="today-label">DZISIAJ</span>' : ''}</span>
         <span class="match-home">${m.gospodarz ?? ''}</span>
         <span class="match-score ${hasScore ? '' : 'pending'}">${score}</span>
         <span class="match-away">${m.gosc ?? ''}</span>
