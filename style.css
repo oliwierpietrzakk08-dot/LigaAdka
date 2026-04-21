@@ -30,7 +30,6 @@ body {
 
 main { flex: 1; }
 
-/* ======== HEADER ======== */
 header {
   position: sticky;
   top: 0;
@@ -89,7 +88,6 @@ header > nav a.active::after { width: 100%; }
 header > nav a.instagram-link { display: flex; align-items: center; }
 header > nav a.instagram-link svg { width: 22px; height: 22px; fill: var(--white); }
 
-/* ======== HAMBURGER ======== */
 .hamburger {
   display: none;
   flex-direction: column;
@@ -116,7 +114,6 @@ header > nav a.instagram-link svg { width: 22px; height: 22px; fill: var(--white
 .hamburger.open span:nth-child(2) { opacity: 0; }
 .hamburger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
-/* ======== MOBILE NAV ======== */
 .mobile-nav {
   display: none;
   position: fixed;
@@ -173,7 +170,6 @@ header > nav a.instagram-link svg { width: 22px; height: 22px; fill: var(--white
 
 .nav-overlay.open { display: block; }
 
-/* ======== HERO ======== */
 .hero {
   background: var(--primary);
   padding: 100px 2rem;
@@ -207,7 +203,6 @@ header > nav a.instagram-link svg { width: 22px; height: 22px; fill: var(--white
   margin-top: 0.75rem;
 }
 
-/* ======== BUTTONS ======== */
 .btn {
   display: inline-block;
   padding: 0.75rem 2rem;
@@ -236,7 +231,6 @@ header > nav a.instagram-link svg { width: 22px; height: 22px; fill: var(--white
 
 .btn-outline:hover { background: rgba(255,255,255,0.15); }
 
-/* ======== LAYOUT ======== */
 section { padding: 80px 0; }
 
 .container {
@@ -264,7 +258,6 @@ h2 {
   margin-bottom: 1.5rem;
 }
 
-/* ======== O LIDZE ======== */
 .about-grid {
   display: grid;
   grid-template-columns: 3fr 2fr;
@@ -292,7 +285,6 @@ h2 {
   border-radius: var(--radius);
 }
 
-/* ======== LOCATION ======== */
 .location-section { background: var(--white); }
 
 .map-wrapper {
@@ -321,7 +313,6 @@ h2 {
 
 .location-label svg { width: 18px; height: 18px; fill: var(--primary); flex-shrink: 0; }
 
-/* ======== TABS ======== */
 .tabs-wrapper { margin-bottom: 0; }
 
 .tabs {
@@ -352,7 +343,6 @@ h2 {
 .tab-panel { display: none; }
 .tab-panel.active { display: block; }
 
-/* ======== TABLES ======== */
 .table-wrapper {
   overflow-x: auto;
   border-radius: var(--radius);
@@ -397,7 +387,6 @@ td.pts {
   font-size: 1rem;
 }
 
-/* Top 3 scorer */
 tr.gold   { background: #fffbeb; }
 tr.silver { background: #f8f9fa; }
 tr.bronze { background: #fff5f0; }
@@ -406,7 +395,6 @@ tr.gold   td:nth-child(1) { font-weight: 700; color: #b8860b; }
 tr.silver td:nth-child(1) { font-weight: 700; color: #6b7280; }
 tr.bronze td:nth-child(1) { font-weight: 700; color: #92400e; }
 
-/* Playoff advancement zone */
 tr.advances td:first-child {
   border-left: 3px solid #27ae60;
   padding-left: calc(1rem - 3px);
@@ -435,7 +423,6 @@ tr.advances td:first-child {
   border-bottom: 2px dashed #27ae60 !important;
 }
 
-/* ======== ROUND NAVIGATOR ======== */
 .round-nav {
   display: flex;
   align-items: center;
@@ -534,7 +521,6 @@ tr.advances td:first-child {
 .round-dot.active   { background: var(--primary); transform: scale(1.4); }
 .round-dot.today    { background: #27ae60; }
 
-/* ======== MATCH CARDS ======== */
 .match-card {
   background: var(--white);
   border-radius: var(--radius);
@@ -612,7 +598,6 @@ tr.advances td:first-child {
   font-size: 0.92rem;
 }
 
-/* ======== INDEX ROUND PREVIEW ======== */
 .index-round-section {
   background: var(--white);
   padding: 60px 0;
@@ -673,7 +658,6 @@ tr.advances td:first-child {
   .round-preview-grid { grid-template-columns: 1fr; }
 }
 
-/* ======== CLUB LINK IN TABLE ======== */
 .club-link {
   background: none;
   border: none;
@@ -695,7 +679,6 @@ tr.advances td:first-child {
   opacity: 0.8;
 }
 
-/* ======== CLUB MODAL ======== */
 .club-modal-overlay {
   display: none;
   position: fixed;
@@ -849,7 +832,6 @@ tr.advances td:first-child {
   font-weight: 700;
 }
 
-/* ======== REGULAMIN ======== */
 .regulamin-card {
   background: var(--white);
   border-radius: var(--radius);
@@ -885,7 +867,6 @@ tr.advances td:first-child {
 
 .regulamin-card li { margin-bottom: 0.35rem; }
 
-/* ======== FOOTER ======== */
 footer {
   background: var(--primary);
   color: var(--white);
@@ -946,7 +927,6 @@ footer {
   margin: 0 auto;
 }
 
-/* ======== SPINNER & ERROR ======== */
 .spinner-wrap {
   display: flex;
   justify-content: center;
@@ -975,7 +955,6 @@ footer {
   box-shadow: var(--card-shadow);
 }
 
-/* ======== FADE-UP ANIMATION ======== */
 .fade-up {
   opacity: 0;
   transform: translateY(28px);
@@ -987,12 +966,10 @@ footer {
   transform: translateY(0);
 }
 
-/* ======== PAGE SECTION INTRO ======== */
 .section-intro {
   padding: 2.5rem 0 0;
 }
 
-/* ======== RESPONSIVE ======== */
 @media (max-width: 900px) {
   .about-grid { grid-template-columns: 1fr; }
   .about-image { order: -1; }

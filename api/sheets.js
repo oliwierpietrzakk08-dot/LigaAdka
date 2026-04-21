@@ -1,17 +1,9 @@
-/**
- * Normalizuje nazwę kolumny z GViz API.
- * Problem: komórka nagłówkowa może zawierać długi opis (np. instrukcje),
- * a właściwa nazwa kolumny pojawia się na końcu lub w środku.
- * Rozwiązanie: dla długich nagłówków wyciągnij ostatni token
- * zaczynający się małą literą (a–z lub polska litera).
- */
+
 function normalizeHeader(label) {
   const s = (label ?? '').trim();
-  // Krótkie, czyste nazwy — zwróć od razu
+
   if (s.length <= 30 && !/\s/.test(s)) return s;
-  // Dla długich nagłówków: znajdź ostatni token zaczynający się od małej litery
-  // (polskie/łacińskie litery), długości >= 2 znaków
-  // Negative lookbehind: nie zaczynaj w środku słowa (np. "rupa" z "Grupa")
+
   const re = /(?<![a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ])[a-ząćęłńóśźż][a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9_]*/g;
   let last = null;
   let m;
@@ -28,7 +20,7 @@ export default async function handler(req, res) {
   const SHEET_ID = process.env.SHEET_ID;
   if (!SHEET_ID) return res.status(500).json({ error: 'Brak konfiguracji SHEET_ID' });
 
-  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheet)}&t=${Date.now()}`;
+  const url = `https:
 
   try {
     const response = await fetch(url);

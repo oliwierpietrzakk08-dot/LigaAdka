@@ -1,13 +1,9 @@
-/* ======================================================
-   Liga Adka – script.js
-   ====================================================== */
+
 
 const PLAYOFFS_SPOTS = 4;
 
-// ── MOCK DATA ───────────────────────────────────────────
-
 const MOCK_KLUBY = [
-  // Grupa A
+
   { id:1,  nazwa:'Sportowa Domanka',          grupa:'A', mecze:0, wygrane:0, remisy:0, porazki:0, bramki_zdobyte:0, bramki_stracone:0, punkty:0 },
   { id:2,  nazwa:'FC Rails',                  grupa:'A', mecze:0, wygrane:0, remisy:0, porazki:0, bramki_zdobyte:0, bramki_stracone:0, punkty:0 },
   { id:3,  nazwa:'Popowiacy',                 grupa:'A', mecze:0, wygrane:0, remisy:0, porazki:0, bramki_zdobyte:0, bramki_stracone:0, punkty:0 },
@@ -18,7 +14,7 @@ const MOCK_KLUBY = [
   { id:8,  nazwa:'Latino Boys',              grupa:'A', mecze:0, wygrane:0, remisy:0, porazki:0, bramki_zdobyte:0, bramki_stracone:0, punkty:0 },
   { id:9,  nazwa:'Orły Shiltona',            grupa:'A', mecze:0, wygrane:0, remisy:0, porazki:0, bramki_zdobyte:0, bramki_stracone:0, punkty:0 },
   { id:10, nazwa:'FC Skowroda',              grupa:'A', mecze:0, wygrane:0, remisy:0, porazki:0, bramki_zdobyte:0, bramki_stracone:0, punkty:0 },
-  // Grupa B
+
   { id:11, nazwa:'WKS Bratki',               grupa:'B', mecze:0, wygrane:0, remisy:0, porazki:0, bramki_zdobyte:0, bramki_stracone:0, punkty:0 },
   { id:12, nazwa:'KS Adek',                  grupa:'B', mecze:0, wygrane:0, remisy:0, porazki:0, bramki_zdobyte:0, bramki_stracone:0, punkty:0 },
   { id:13, nazwa:'KS Stefan',                grupa:'B', mecze:0, wygrane:0, remisy:0, porazki:0, bramki_zdobyte:0, bramki_stracone:0, punkty:0 },
@@ -31,79 +27,62 @@ const MOCK_KLUBY = [
   { id:20, nazwa:'Mops z Bielawy',           grupa:'B', mecze:0, wygrane:0, remisy:0, porazki:0, bramki_zdobyte:0, bramki_stracone:0, punkty:0 },
 ];
 
-// ── STAŁY TERMINARZ ─────────────────────────────────────
-// Wyniki nakładane dynamicznie z /api/sheets?sheet=wyniki
-
 const TERMINARZ = [
 
-  // ── GRUPA A ──────────────────────────────────────────
-
-  // Kolejka 1 — Niedziela 26.04.2026
   { kolejka:1, grupa:'A', data:'26.04.2026', godz:'13:00', gospodarz:'Sportowa Domanka', gosc:'Latino Boys' },
   { kolejka:1, grupa:'A', data:'26.04.2026', godz:'14:00', gospodarz:'FC Rails',          gosc:'Marvex Łowicz' },
   { kolejka:1, grupa:'A', data:'26.04.2026', godz:'15:00', gospodarz:'Popowiacy',         gosc:'FC Skowroda' },
   { kolejka:1, grupa:'A', data:'26.04.2026', godz:'16:00', gospodarz:'JKM Łowicz',       gosc:'Orły Shiltona' },
   { kolejka:1, grupa:'A', data:'26.04.2026', godz:'17:00', gospodarz:'ZKS Zatorze',      gosc:'Monster Kiernozia' },
 
-  // Kolejka 2 — Sobota 02.05.2026
   { kolejka:2, grupa:'A', data:'02.05.2026', godz:'13:00', gospodarz:'Sportowa Domanka', gosc:'Marvex Łowicz' },
   { kolejka:2, grupa:'A', data:'02.05.2026', godz:'14:00', gospodarz:'Latino Boys',      gosc:'FC Skowroda' },
   { kolejka:2, grupa:'A', data:'02.05.2026', godz:'15:00', gospodarz:'FC Rails',          gosc:'Orły Shiltona' },
   { kolejka:2, grupa:'A', data:'02.05.2026', godz:'16:00', gospodarz:'Popowiacy',         gosc:'Monster Kiernozia' },
   { kolejka:2, grupa:'A', data:'02.05.2026', godz:'17:00', gospodarz:'JKM Łowicz',       gosc:'ZKS Zatorze' },
 
-  // Kolejka 3 — Sobota 09.05.2026
   { kolejka:3, grupa:'A', data:'09.05.2026', godz:'13:00', gospodarz:'Sportowa Domanka', gosc:'FC Skowroda' },
   { kolejka:3, grupa:'A', data:'09.05.2026', godz:'14:00', gospodarz:'Marvex Łowicz',    gosc:'Orły Shiltona' },
   { kolejka:3, grupa:'A', data:'09.05.2026', godz:'15:00', gospodarz:'Latino Boys',      gosc:'Monster Kiernozia' },
   { kolejka:3, grupa:'A', data:'09.05.2026', godz:'16:00', gospodarz:'FC Rails',          gosc:'ZKS Zatorze' },
   { kolejka:3, grupa:'A', data:'09.05.2026', godz:'17:00', gospodarz:'Popowiacy',         gosc:'JKM Łowicz' },
 
-  // Kolejka 4 — Sobota 16.05.2026
   { kolejka:4, grupa:'A', data:'16.05.2026', godz:'13:00', gospodarz:'Sportowa Domanka', gosc:'Orły Shiltona' },
   { kolejka:4, grupa:'A', data:'16.05.2026', godz:'14:00', gospodarz:'FC Skowroda',      gosc:'Monster Kiernozia' },
   { kolejka:4, grupa:'A', data:'16.05.2026', godz:'15:00', gospodarz:'Marvex Łowicz',    gosc:'ZKS Zatorze' },
   { kolejka:4, grupa:'A', data:'16.05.2026', godz:'16:00', gospodarz:'Latino Boys',      gosc:'JKM Łowicz' },
   { kolejka:4, grupa:'A', data:'16.05.2026', godz:'17:00', gospodarz:'FC Rails',          gosc:'Popowiacy' },
 
-  // Kolejka 5 — Sobota 23.05.2026
   { kolejka:5, grupa:'A', data:'23.05.2026', godz:'13:00', gospodarz:'Sportowa Domanka', gosc:'Monster Kiernozia' },
   { kolejka:5, grupa:'A', data:'23.05.2026', godz:'14:00', gospodarz:'Orły Shiltona',    gosc:'ZKS Zatorze' },
   { kolejka:5, grupa:'A', data:'23.05.2026', godz:'15:00', gospodarz:'FC Skowroda',      gosc:'JKM Łowicz' },
   { kolejka:5, grupa:'A', data:'23.05.2026', godz:'16:00', gospodarz:'Marvex Łowicz',    gosc:'Popowiacy' },
   { kolejka:5, grupa:'A', data:'23.05.2026', godz:'17:00', gospodarz:'Latino Boys',      gosc:'FC Rails' },
 
-  // Kolejka 6 — Sobota 30.05.2026
   { kolejka:6, grupa:'A', data:'30.05.2026', godz:'13:00', gospodarz:'Sportowa Domanka', gosc:'ZKS Zatorze' },
   { kolejka:6, grupa:'A', data:'30.05.2026', godz:'14:00', gospodarz:'Monster Kiernozia', gosc:'JKM Łowicz' },
   { kolejka:6, grupa:'A', data:'30.05.2026', godz:'15:00', gospodarz:'Orły Shiltona',    gosc:'Popowiacy' },
   { kolejka:6, grupa:'A', data:'30.05.2026', godz:'16:00', gospodarz:'FC Skowroda',      gosc:'FC Rails' },
   { kolejka:6, grupa:'A', data:'30.05.2026', godz:'17:00', gospodarz:'Marvex Łowicz',    gosc:'Latino Boys' },
 
-  // Kolejka 7 — Sobota 06.06.2026
   { kolejka:7, grupa:'A', data:'06.06.2026', godz:'13:00', gospodarz:'Sportowa Domanka', gosc:'JKM Łowicz' },
   { kolejka:7, grupa:'A', data:'06.06.2026', godz:'14:00', gospodarz:'ZKS Zatorze',      gosc:'Popowiacy' },
   { kolejka:7, grupa:'A', data:'06.06.2026', godz:'15:00', gospodarz:'Monster Kiernozia', gosc:'FC Rails' },
   { kolejka:7, grupa:'A', data:'06.06.2026', godz:'16:00', gospodarz:'Orły Shiltona',    gosc:'Latino Boys' },
   { kolejka:7, grupa:'A', data:'06.06.2026', godz:'17:00', gospodarz:'FC Skowroda',      gosc:'Marvex Łowicz' },
 
-  // Kolejka 8 — Sobota 13.06.2026
   { kolejka:8, grupa:'A', data:'13.06.2026', godz:'13:00', gospodarz:'Sportowa Domanka', gosc:'Popowiacy' },
   { kolejka:8, grupa:'A', data:'13.06.2026', godz:'14:00', gospodarz:'JKM Łowicz',       gosc:'FC Rails' },
   { kolejka:8, grupa:'A', data:'13.06.2026', godz:'15:00', gospodarz:'ZKS Zatorze',      gosc:'Latino Boys' },
   { kolejka:8, grupa:'A', data:'13.06.2026', godz:'16:00', gospodarz:'Monster Kiernozia', gosc:'Marvex Łowicz' },
   { kolejka:8, grupa:'A', data:'13.06.2026', godz:'17:00', gospodarz:'Orły Shiltona',    gosc:'FC Skowroda' },
 
-  // Kolejka 9 — Sobota 20.06.2026
   { kolejka:9, grupa:'A', data:'20.06.2026', godz:'13:00', gospodarz:'Sportowa Domanka', gosc:'FC Rails' },
   { kolejka:9, grupa:'A', data:'20.06.2026', godz:'14:00', gospodarz:'Popowiacy',         gosc:'Latino Boys' },
   { kolejka:9, grupa:'A', data:'20.06.2026', godz:'15:00', gospodarz:'JKM Łowicz',       gosc:'Marvex Łowicz' },
   { kolejka:9, grupa:'A', data:'20.06.2026', godz:'16:00', gospodarz:'ZKS Zatorze',      gosc:'FC Skowroda' },
   { kolejka:9, grupa:'A', data:'20.06.2026', godz:'17:00', gospodarz:'Monster Kiernozia', gosc:'Orły Shiltona' },
 
-  // ── GRUPA B ──────────────────────────────────────────
-
-  // Kolejka 1 — Sobota 25.04.2026
   { kolejka:1, grupa:'B', data:'25.04.2026', godz:'13:00', gospodarz:'Asy z B-klasy',           gosc:'Browar Bednary' },
   { kolejka:1, grupa:'B', data:'25.04.2026', godz:'14:00', gospodarz:'KS Stefan',               gosc:'MSP' },
   { kolejka:1, grupa:'B', data:'25.04.2026', godz:'15:00', gospodarz:'KS Adek',                 gosc:'NTP Przedmieście' },
@@ -111,7 +90,6 @@ const TERMINARZ = [
   { kolejka:1, grupa:'B', data:'25.04.2026', godz:'17:00', gospodarz:'WKS Bratki',              gosc:'FC Pivko' },
   { kolejka:1, grupa:'B', data:'25.04.2026', godz:'—',     gospodarz:'FC Zatorze',              gosc:'PAUZA' },
 
-  // Kolejka 2 — Niedziela 03.05.2026
   { kolejka:2, grupa:'B', data:'03.05.2026', godz:'13:00', gospodarz:'Asy z B-klasy',           gosc:'MSP' },
   { kolejka:2, grupa:'B', data:'03.05.2026', godz:'14:00', gospodarz:'Browar Bednary',          gosc:'NTP Przedmieście' },
   { kolejka:2, grupa:'B', data:'03.05.2026', godz:'15:00', gospodarz:'KS Stefan',               gosc:'Mops z Bielawy' },
@@ -119,7 +97,6 @@ const TERMINARZ = [
   { kolejka:2, grupa:'B', data:'03.05.2026', godz:'17:00', gospodarz:'WKS Bratki',              gosc:'FC Zatorze' },
   { kolejka:2, grupa:'B', data:'03.05.2026', godz:'—',     gospodarz:'Parado no Bailão Górki',  gosc:'PAUZA' },
 
-  // Kolejka 3 — Niedziela 10.05.2026
   { kolejka:3, grupa:'B', data:'10.05.2026', godz:'13:00', gospodarz:'Asy z B-klasy',           gosc:'NTP Przedmieście' },
   { kolejka:3, grupa:'B', data:'10.05.2026', godz:'14:00', gospodarz:'MSP',                     gosc:'Mops z Bielawy' },
   { kolejka:3, grupa:'B', data:'10.05.2026', godz:'15:00', gospodarz:'Browar Bednary',          gosc:'FC Pivko' },
@@ -127,7 +104,6 @@ const TERMINARZ = [
   { kolejka:3, grupa:'B', data:'10.05.2026', godz:'17:00', gospodarz:'Parado no Bailão Górki',  gosc:'WKS Bratki' },
   { kolejka:3, grupa:'B', data:'10.05.2026', godz:'—',     gospodarz:'KS Stefan',               gosc:'PAUZA' },
 
-  // Kolejka 4 — Niedziela 17.05.2026
   { kolejka:4, grupa:'B', data:'17.05.2026', godz:'13:00', gospodarz:'Asy z B-klasy',           gosc:'Mops z Bielawy' },
   { kolejka:4, grupa:'B', data:'17.05.2026', godz:'14:00', gospodarz:'NTP Przedmieście',        gosc:'FC Pivko' },
   { kolejka:4, grupa:'B', data:'17.05.2026', godz:'15:00', gospodarz:'Browar Bednary',          gosc:'FC Zatorze' },
@@ -135,7 +111,6 @@ const TERMINARZ = [
   { kolejka:4, grupa:'B', data:'17.05.2026', godz:'17:00', gospodarz:'KS Adek',                 gosc:'Parado no Bailão Górki' },
   { kolejka:4, grupa:'B', data:'17.05.2026', godz:'—',     gospodarz:'MSP',                     gosc:'PAUZA' },
 
-  // Kolejka 5 — Niedziela 24.05.2026
   { kolejka:5, grupa:'B', data:'24.05.2026', godz:'13:00', gospodarz:'Asy z B-klasy',           gosc:'FC Pivko' },
   { kolejka:5, grupa:'B', data:'24.05.2026', godz:'14:00', gospodarz:'NTP Przedmieście',        gosc:'FC Zatorze' },
   { kolejka:5, grupa:'B', data:'24.05.2026', godz:'15:00', gospodarz:'MSP',                     gosc:'WKS Bratki' },
@@ -143,7 +118,6 @@ const TERMINARZ = [
   { kolejka:5, grupa:'B', data:'24.05.2026', godz:'17:00', gospodarz:'KS Stefan',               gosc:'KS Adek' },
   { kolejka:5, grupa:'B', data:'24.05.2026', godz:'—',     gospodarz:'Mops z Bielawy',          gosc:'PAUZA' },
 
-  // Kolejka 6 — Niedziela 31.05.2026
   { kolejka:6, grupa:'B', data:'31.05.2026', godz:'13:00', gospodarz:'FC Pivko',                gosc:'FC Zatorze' },
   { kolejka:6, grupa:'B', data:'31.05.2026', godz:'14:00', gospodarz:'Mops z Bielawy',          gosc:'WKS Bratki' },
   { kolejka:6, grupa:'B', data:'31.05.2026', godz:'15:00', gospodarz:'NTP Przedmieście',        gosc:'Parado no Bailão Górki' },
@@ -151,7 +125,6 @@ const TERMINARZ = [
   { kolejka:6, grupa:'B', data:'31.05.2026', godz:'17:00', gospodarz:'Browar Bednary',          gosc:'KS Stefan' },
   { kolejka:6, grupa:'B', data:'31.05.2026', godz:'—',     gospodarz:'Asy z B-klasy',           gosc:'PAUZA' },
 
-  // Kolejka 7 — Niedziela 07.06.2026
   { kolejka:7, grupa:'B', data:'07.06.2026', godz:'13:00', gospodarz:'Asy z B-klasy',           gosc:'FC Zatorze' },
   { kolejka:7, grupa:'B', data:'07.06.2026', godz:'14:00', gospodarz:'FC Pivko',                gosc:'Parado no Bailão Górki' },
   { kolejka:7, grupa:'B', data:'07.06.2026', godz:'15:00', gospodarz:'Mops z Bielawy',          gosc:'KS Adek' },
@@ -159,7 +132,6 @@ const TERMINARZ = [
   { kolejka:7, grupa:'B', data:'07.06.2026', godz:'17:00', gospodarz:'MSP',                     gosc:'Browar Bednary' },
   { kolejka:7, grupa:'B', data:'07.06.2026', godz:'—',     gospodarz:'WKS Bratki',              gosc:'PAUZA' },
 
-  // Kolejka 8 — Niedziela 14.06.2026
   { kolejka:8, grupa:'B', data:'14.06.2026', godz:'13:00', gospodarz:'Asy z B-klasy',           gosc:'WKS Bratki' },
   { kolejka:8, grupa:'B', data:'14.06.2026', godz:'14:00', gospodarz:'FC Zatorze',              gosc:'Parado no Bailão Górki' },
   { kolejka:8, grupa:'B', data:'14.06.2026', godz:'15:00', gospodarz:'FC Pivko',                gosc:'KS Stefan' },
@@ -167,7 +139,6 @@ const TERMINARZ = [
   { kolejka:8, grupa:'B', data:'14.06.2026', godz:'17:00', gospodarz:'NTP Przedmieście',        gosc:'MSP' },
   { kolejka:8, grupa:'B', data:'14.06.2026', godz:'—',     gospodarz:'KS Adek',                 gosc:'PAUZA' },
 
-  // Kolejka 9 — Niedziela 21.06.2026
   { kolejka:9, grupa:'B', data:'21.06.2026', godz:'13:00', gospodarz:'Asy z B-klasy',           gosc:'Parado no Bailão Górki' },
   { kolejka:9, grupa:'B', data:'21.06.2026', godz:'14:00', gospodarz:'WKS Bratki',              gosc:'KS Adek' },
   { kolejka:9, grupa:'B', data:'21.06.2026', godz:'15:00', gospodarz:'FC Zatorze',              gosc:'KS Stefan' },
@@ -175,7 +146,6 @@ const TERMINARZ = [
   { kolejka:9, grupa:'B', data:'21.06.2026', godz:'17:00', gospodarz:'Mops z Bielawy',          gosc:'NTP Przedmieście' },
   { kolejka:9, grupa:'B', data:'21.06.2026', godz:'—',     gospodarz:'Browar Bednary',          gosc:'PAUZA' },
 
-  // Kolejka 10 — Niedziela 28.06.2026
   { kolejka:10, grupa:'B', data:'28.06.2026', godz:'13:00', gospodarz:'Asy z B-klasy',          gosc:'KS Adek' },
   { kolejka:10, grupa:'B', data:'28.06.2026', godz:'14:00', gospodarz:'Parado no Bailão Górki', gosc:'KS Stefan' },
   { kolejka:10, grupa:'B', data:'28.06.2026', godz:'15:00', gospodarz:'WKS Bratki',             gosc:'Browar Bednary' },
@@ -183,7 +153,6 @@ const TERMINARZ = [
   { kolejka:10, grupa:'B', data:'28.06.2026', godz:'17:00', gospodarz:'FC Pivko',               gosc:'Mops z Bielawy' },
   { kolejka:10, grupa:'B', data:'28.06.2026', godz:'—',     gospodarz:'NTP Przedmieście',       gosc:'PAUZA' },
 
-  // Kolejka 11 — Niedziela 05.07.2026
   { kolejka:11, grupa:'B', data:'05.07.2026', godz:'13:00', gospodarz:'Asy z B-klasy',          gosc:'KS Stefan' },
   { kolejka:11, grupa:'B', data:'05.07.2026', godz:'14:00', gospodarz:'KS Adek',                gosc:'Browar Bednary' },
   { kolejka:11, grupa:'B', data:'05.07.2026', godz:'15:00', gospodarz:'Parado no Bailão Górki', gosc:'MSP' },
@@ -192,11 +161,7 @@ const TERMINARZ = [
   { kolejka:11, grupa:'B', data:'05.07.2026', godz:'—',     gospodarz:'FC Pivko',               gosc:'PAUZA' },
 ];
 
-// Zawodnicy – ładowane z Google Sheets (zakładka "zawodnicy")
-// Pusta tablica — dane wpisywane ręcznie w arkuszu
 const MOCK_ZAWODNICY = [];
-
-// ── DATE INTELLIGENCE ───────────────────────────────────
 
 function parseMatchDate(str) {
   if (!str) return null;
@@ -254,12 +219,10 @@ function detectCurrentRound(rows) {
   const keys = Object.keys(rounds).map(Number).sort((a, b) => a - b);
   if (!keys.length) return null;
 
-  // Any round happening today?
   for (const k of keys) {
     if (rounds[k].some(r => matchStatus(r.data) === 'today')) return k;
   }
 
-  // Most recent past round
   let lastPast = null;
   for (const k of keys) {
     const allPast = rounds[k].every(r => matchStatus(r.data) === 'past');
@@ -267,7 +230,6 @@ function detectCurrentRound(rows) {
   }
   if (lastPast !== null) return lastPast;
 
-  // Fall back to first upcoming
   return keys[0];
 }
 
@@ -289,7 +251,6 @@ function roundBadgeHTML(rounds, activeKey) {
   return `<span class="round-badge past-badge">Zakończona</span>`;
 }
 
-// ── MERGE RESULTS INTO TERMINARZ ────────────────────────
 /**
  * Nakłada wyniki z arkusza na stały terminarz.
  * Dopasowanie po: gospodarz + gosc + kolejka + grupa
@@ -306,8 +267,6 @@ function mergeResults(terminarz, wyniki) {
   });
 }
 
-// ── FETCH ───────────────────────────────────────────────
-
 async function fetchSheet(sheetName) {
   const res = await fetch(`/api/sheets?sheet=${sheetName}`);
   if (!res.ok) throw new Error('Błąd serwera');
@@ -321,8 +280,6 @@ function showSpinner(el) {
 function showError(el) {
   if (el) el.innerHTML = '<p class="error-msg">Nie udało się załadować danych. Spróbuj odświeżyć stronę.</p>';
 }
-
-// ── HAMBURGER ───────────────────────────────────────────
 
 function initHamburger() {
   const btn       = document.querySelector('.hamburger');
@@ -346,8 +303,6 @@ function initHamburger() {
   mobileNav.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
 }
 
-// ── TABS ────────────────────────────────────────────────
-
 function initTabs() {
   document.querySelectorAll('.tabs').forEach(tabBar => {
     tabBar.querySelectorAll('.tab-btn').forEach(btn => {
@@ -364,8 +319,6 @@ function initTabs() {
   });
 }
 
-// ── FADE-UP OBSERVER ────────────────────────────────────
-
 function initFadeUp() {
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => {
@@ -375,8 +328,6 @@ function initFadeUp() {
   document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
 }
 
-// ── ACTIVE NAV LINK ─────────────────────────────────────
-
 function setActiveLink() {
   const page = location.pathname.split('/').pop() || 'index.html';
   document.querySelectorAll('header > nav a, .mobile-nav a').forEach(a => {
@@ -385,8 +336,6 @@ function setActiveLink() {
     if ((page === '' || page === 'index.html') && href.includes('index.html')) a.classList.add('active');
   });
 }
-
-// ── CLUB MODAL ───────────────────────────────────────────
 
 let _zawodnicy = null;
 
@@ -479,8 +428,6 @@ function closeClubModal() {
   document.body.style.overflow = '';
 }
 
-// ── GRUPY PAGE ──────────────────────────────────────────
-
 async function initGrupy() {
   const cA = document.getElementById('tabela-a');
   const cB = document.getElementById('tabela-b');
@@ -488,7 +435,6 @@ async function initGrupy() {
 
   showSpinner(cA); showSpinner(cB);
 
-  // Fetch kluby and zawodnicy in parallel
   const [klubyRaw, zawodnicyRaw] = await Promise.allSettled([
     fetchSheet('kluby'),
     fetchSheet('zawodnicy'),
@@ -559,8 +505,6 @@ function renderTabela(rows, container) {
   });
 }
 
-// ── MECZE PAGE — ROUND NAVIGATOR ────────────────────────
-
 async function initMecze() {
   const cA = document.getElementById('mecze-a');
   const cB = document.getElementById('mecze-b');
@@ -572,7 +516,7 @@ async function initMecze() {
   try {
     const data = await fetchSheet('wyniki');
     if (Array.isArray(data)) wyniki = data;
-  } catch { /* brak wyników — terminarz bez wyników */ }
+  } catch {  }
 
   const merged = mergeResults(TERMINARZ, wyniki);
   renderRoundNavigator(merged.filter(r => r.grupa === 'A'), cA);
@@ -597,7 +541,6 @@ function renderRoundNavigator(rows, container) {
     const hasNext = idx < keys.length - 1;
     const roundDate = matches[0]?.data ?? '';
 
-    // ── navigation bar
     let html = `
       <div class="round-nav">
         <button class="round-nav-btn" data-dir="prev" ${hasPrev ? '' : 'disabled'} aria-label="Poprzednia kolejka">
@@ -613,7 +556,6 @@ function renderRoundNavigator(rows, container) {
         </button>
       </div>`;
 
-    // ── match cards (skip PAUZA)
     matches.filter(m => m.gosc !== 'PAUZA').forEach(m => {
       const st       = matchStatus(m.data);
       const gh       = m.gole_gospodarz;
@@ -635,7 +577,6 @@ function renderRoundNavigator(rows, container) {
       </div>`;
     });
 
-    // ── round dots
     html += `<div class="round-dots">`;
     keys.forEach(k => {
       const ms = rounds[k];
@@ -648,7 +589,6 @@ function renderRoundNavigator(rows, container) {
 
     container.innerHTML = html;
 
-    // ── events
     container.querySelector('[data-dir="prev"]')?.addEventListener('click', () => {
       const i = keys.indexOf(active);
       if (i > 0) { active = keys[i - 1]; paint(); }
@@ -668,8 +608,6 @@ function renderRoundNavigator(rows, container) {
   paint();
 }
 
-// ── INDEX PAGE — ROUND PREVIEW ──────────────────────────
-
 async function initIndexRound() {
   const container = document.getElementById('index-round-preview');
   if (!container) return;
@@ -679,7 +617,7 @@ async function initIndexRound() {
   try {
     const data = await fetchSheet('wyniki');
     if (Array.isArray(data)) wyniki = data;
-  } catch { /* terminarz bez wyników */ }
+  } catch {  }
 
   const merged = mergeResults(TERMINARZ, wyniki);
   const dataA  = merged.filter(r => r.grupa === 'A' && r.gosc !== 'PAUZA');
@@ -689,7 +627,6 @@ async function initIndexRound() {
   const matchesA = dataA.filter(r => Number(r.kolejka) === roundA);
   const matchesB = dataB.filter(r => Number(r.kolejka) === roundB);
 
-  // Find the headline round (today > upcoming > most recent past)
   function headlineLabel(matches, round) {
     if (!round) return '';
     const hasToday = matches.some(r => matchStatus(r.data) === 'today');
@@ -736,8 +673,6 @@ async function initIndexRound() {
     </div>`;
 }
 
-// ── KROL STRZELCOW ──────────────────────────────────────
-
 async function initKrol() {
   const container = document.getElementById('tabela-strzelcy');
   if (!container) return;
@@ -745,17 +680,15 @@ async function initKrol() {
 
   let data;
   try {
-    // Primary source: zawodnicy sheet (same as club profiles)
+
     data = await fetchSheet('zawodnicy');
     if (!Array.isArray(data) || !data.length) throw new Error('empty');
   } catch {
     data = MOCK_ZAWODNICY;
   }
 
-  // Also cache for modal use if grupy wasn't visited first
   if (!_zawodnicy) _zawodnicy = data;
 
-  // Only players with at least 1 goal
   renderStrzelcy(data.filter(p => Number(p.bramki) > 0), container);
 }
 
@@ -788,8 +721,6 @@ function renderStrzelcy(rows, container) {
   html += `</tbody></table></div>`;
   container.innerHTML = html;
 }
-
-// ── INIT ────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', () => {
   initHamburger();
