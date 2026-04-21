@@ -25,6 +25,7 @@ const MOCK_KLUBY = [
   { id:18, nazwa:'FC Pivko',                 grupa:'B', mecze:0, wygrane:0, remisy:0, porazki:0, bramki_zdobyte:0, bramki_stracone:0, punkty:0 },
   { id:19, nazwa:'MSP',                      grupa:'B', mecze:0, wygrane:0, remisy:0, porazki:0, bramki_zdobyte:0, bramki_stracone:0, punkty:0 },
   { id:20, nazwa:'Mops z Bielawy',           grupa:'B', mecze:0, wygrane:0, remisy:0, porazki:0, bramki_zdobyte:0, bramki_stracone:0, punkty:0 },
+  { id:21, nazwa:'FC Zatorze',              grupa:'B', mecze:0, wygrane:0, remisy:0, porazki:0, bramki_zdobyte:0, bramki_stracone:0, punkty:0 },
 ];
 
 const TERMINARZ = [
