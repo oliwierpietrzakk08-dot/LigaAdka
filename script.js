@@ -446,7 +446,7 @@ function openClubModal(clubName, grupa) {
   if (!count) {
     html += `
       <div style="text-align:center;padding:2rem 1rem">
-        <div style="font-size:2.5rem;margin-bottom:0.75rem">👥</div>
+        <div style="font-size:2.5rem;margin-bottom:0.75rem"></div>
         <p style="color:#888;font-size:0.9rem;line-height:1.6">
           Skład zostanie ogłoszony wkrótce.
         </p>
@@ -461,7 +461,7 @@ function openClubModal(clubName, grupa) {
         <div class="club-player-row ${isTop ? 'top-scorer' : ''}">
           <span class="club-player-name">${name}</span>
           <span class="club-player-goals ${goals > 0 ? 'has-goals' : ''}">
-            ${goals > 0 ? `⚽ ${goals}` : '—'}
+            ${goals > 0 ? `${goals}` : '—'}
           </span>
         </div>`;
     });
@@ -776,7 +776,7 @@ function renderStrzelcy(rows, container) {
   rows.forEach((r, i) => {
     if (i > 0 && Number(rows[i].bramki) < Number(rows[i - 1].bramki)) rank = i + 1;
     const cls   = rank === 1 ? 'gold' : rank === 2 ? 'silver' : rank === 3 ? 'bronze' : '';
-    const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : rank;
+    const medal = rank;
     html += `<tr class="${cls}">
       <td>${medal}</td>
       <td><strong>${r.imie ?? ''} ${r.nazwisko ?? ''}</strong></td>

@@ -403,9 +403,9 @@ tr.gold   { background: #fffbeb; }
 tr.silver { background: #f8f9fa; }
 tr.bronze { background: #fff5f0; }
 
-tr.gold td:nth-child(1)::before   { content: '🥇 '; }
-tr.silver td:nth-child(1)::before { content: '🥈 '; }
-tr.bronze td:nth-child(1)::before { content: '🥉 '; }
+tr.gold   td:nth-child(1) { font-weight: 700; color: #b8860b; }
+tr.silver td:nth-child(1) { font-weight: 700; color: #6b7280; }
+tr.bronze td:nth-child(1) { font-weight: 700; color: #92400e; }
 
 /* Playoff advancement zone */
 tr.advances td:first-child {
