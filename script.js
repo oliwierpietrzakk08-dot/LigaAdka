@@ -272,6 +272,102 @@ function setActiveLink() {
   });
 }
 
+// ── MATCH MODAL ─────────────────────────────────────────
+
+function ensureMatchModal() {
+  if (document.getElementById('match-modal-overlay')) return;
+  const el = document.createElement('div');
+  el.id = 'match-modal-overlay';
+  el.className = 'club-modal-overlay';
+  el.setAttribute('role', 'dialog');
+  el.setAttribute('aria-modal', 'true');
+  el.innerHTML = `
+    <div class="club-modal" id="match-modal">
+      <div class="club-modal-header">
+        <div>
+          <div class="club-modal-badge" id="match-modal-badge"></div>
+          <h2 class="club-modal-title" id="match-modal-title" style="font-size:1rem"></h2>
+        </div>
+        <button class="club-modal-close" id="match-modal-close" aria-label="Zamknij">✕</button>
+      </div>
+      <div class="club-modal-body" id="match-modal-body"></div>
+    </div>`;
+  document.body.appendChild(el);
+  el.addEventListener('click', e => { if (e.target === el) closeMatchModal(); });
+  document.getElementById('match-modal-close').addEventListener('click', closeMatchModal);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMatchModal(); });
+}
+
+async function openMatchModal(m) {
+  ensureMatchModal();
+  document.getElementById('match-modal-title').textContent =
+    `${m.gospodarz}  ${m.gole_gospodarz} – ${m.gole_gosc}  ${m.gosc}`;
+  document.getElementById('match-modal-badge').textContent =
+    `Kolejka ${m.kolejka} · Grupa ${m.grupa} · ${m.data}`;
+  document.getElementById('match-modal-body').innerHTML =
+    '<div class="spinner-wrap"><div class="spinner"></div></div>';
+  document.getElementById('match-modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  let bramki = [];
+  try {
+    const data = await fetchSheet('bramki');
+    if (Array.isArray(data)) bramki = data;
+  } catch { /* fallback empty */ }
+
+  const matchBramki = bramki.filter(b =>
+    String(b.data).trim()       === String(m.data).trim() &&
+    String(b.gospodarz).trim()  === String(m.gospodarz).trim() &&
+    String(b.gosc).trim()       === String(m.gosc).trim()
+  );
+
+  if (!matchBramki.length) {
+    document.getElementById('match-modal-body').innerHTML =
+      '<p style="padding:1.5rem;color:#888;text-align:center">Brak danych o strzelcach.</p>';
+    return;
+  }
+
+  const homeScorers = matchBramki.filter(b =>
+    String(b.klub_strzelca).trim() === String(m.gospodarz).trim());
+  const awayScorers = matchBramki.filter(b =>
+    String(b.klub_strzelca).trim() === String(m.gosc).trim());
+
+  function scorerList(scorers) {
+    if (!scorers.length)
+      return '<p style="color:#aaa;font-size:0.85rem;padding:0.25rem 0;text-align:center">—</p>';
+    return scorers.map(s => {
+      const goals = Number(s.bramki) || 1;
+      const name  = String(s.strzelec ?? '').trim();
+      return `<div class="club-player-row">
+        <span class="club-player-name">${goals > 1 ? `${goals}× ` : ''}${name}</span>
+        <span class="club-player-goals has-goals">⚽ ${goals}</span>
+      </div>`;
+    }).join('');
+  }
+
+  document.getElementById('match-modal-body').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-top:0.5rem">
+      <div>
+        <div style="font-weight:700;font-size:0.82rem;color:#1a2f5e;margin-bottom:0.75rem;text-align:center">
+          ⚽ ${m.gospodarz}
+        </div>
+        ${scorerList(homeScorers)}
+      </div>
+      <div style="border-left:1px solid #eee;padding-left:1.25rem">
+        <div style="font-weight:700;font-size:0.82rem;color:#1a2f5e;margin-bottom:0.75rem;text-align:center">
+          ⚽ ${m.gosc}
+        </div>
+        ${scorerList(awayScorers)}
+      </div>
+    </div>`;
+}
+
+function closeMatchModal() {
+  const el = document.getElementById('match-modal-overlay');
+  if (el) el.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
 // ── CLUB MODAL ───────────────────────────────────────────
 
 let _zawodnicy = null;
@@ -334,8 +430,7 @@ function openClubModal(clubName, grupa) {
       <div style="text-align:center;padding:2rem 1rem">
         <div style="font-size:2.5rem;margin-bottom:0.75rem">👥</div>
         <p style="color:#888;font-size:0.9rem;line-height:1.6">
-          Zawodnicy tego klubu nie zostali jeszcze wpisani.<br>
-          Dane pojawią się po uzupełnieniu arkusza.
+          Skład zostanie ogłoszony wkrótce.
         </p>
       </div>`;
   } else {
@@ -413,9 +508,10 @@ function renderTabela(rows, container) {
   html += `</tr></thead><tbody>`;
 
   rows.forEach((r, i) => {
-    const adv    = i < PLAYOFFS_SPOTS ? 'advances' : '';
+    const adv         = i < PLAYOFFS_SPOTS ? 'advances' : '';
+    const leaderStyle = i === 0 ? ' style="background:linear-gradient(90deg,#fef9e7 0%,#fffdf0 100%)"' : '';
     const bramki = `${r.bramki_zdobyte ?? 0}:${r.bramki_stracone ?? 0}`;
-    html += `<tr class="${adv}">
+    html += `<tr class="${adv}"${leaderStyle}>
       <td>${i + 1}</td>
       <td>
         <button class="club-link" data-club="${r.nazwa ?? ''}" data-grupa="${r.grupa ?? ''}">
@@ -512,9 +608,14 @@ function renderRoundNavigator(rows, container) {
       const score = hasScore ? `${gh}–${gg}` : 'vs';
       const label = smartDateLabel(m.data);
       const todayTag = st === 'today' ? `<span class="today-label">DZISIAJ</span>` : '';
-      const cardStyle = hasScore ? 'background:#fff' : 'background:#f0f0f0;opacity:0.85';
+      const cardStyle = hasScore
+        ? 'background:#fff;cursor:pointer'
+        : 'background:#f0f0f0;opacity:0.85';
+      const clickAttrs = hasScore
+        ? ` data-clickable="1" data-data="${m.data}" data-gospodarz="${m.gospodarz ?? ''}" data-gosc="${m.gosc ?? ''}" data-gh="${gh}" data-gg="${gg}" data-kolejka="${m.kolejka}" data-grupa="${m.grupa ?? ''}"`
+        : '';
 
-      html += `<div class="match-card status-${st}" style="${cardStyle}">
+      html += `<div class="match-card status-${st}" style="${cardStyle}"${clickAttrs}>
         <span class="match-date">${label}${todayTag}</span>
         <span class="match-home">${m.gospodarz ?? ''}</span>
         <span class="match-score ${hasScore ? '' : 'pending'}">${score}</span>
@@ -534,6 +635,19 @@ function renderRoundNavigator(rows, container) {
     html += `</div>`;
 
     container.innerHTML = html;
+
+    // ── click on played match → modal
+    container.querySelectorAll('.match-card[data-clickable="1"]').forEach(card => {
+      card.addEventListener('click', () => openMatchModal({
+        data:           card.dataset.data,
+        gospodarz:      card.dataset.gospodarz,
+        gosc:           card.dataset.gosc,
+        gole_gospodarz: card.dataset.gh,
+        gole_gosc:      card.dataset.gg,
+        kolejka:        card.dataset.kolejka,
+        grupa:          card.dataset.grupa,
+      }));
+    });
 
     // ── events
     container.querySelector('[data-dir="prev"]')?.addEventListener('click', () => {
@@ -662,9 +776,10 @@ function renderStrzelcy(rows, container) {
   let rank = 1;
   rows.forEach((r, i) => {
     if (i > 0 && Number(rows[i].bramki) < Number(rows[i - 1].bramki)) rank = i + 1;
-    const cls = rank === 1 ? 'gold' : rank === 2 ? 'silver' : rank === 3 ? 'bronze' : '';
+    const cls   = rank === 1 ? 'gold' : rank === 2 ? 'silver' : rank === 3 ? 'bronze' : '';
+    const medal = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : rank;
     html += `<tr class="${cls}">
-      <td>${rank}</td>
+      <td>${medal}</td>
       <td><strong>${r.imie ?? ''} ${r.nazwisko ?? ''}</strong></td>
       <td>${r.klub ?? ''}</td>
       <td>${r.grupa ?? ''}</td>
