@@ -11,7 +11,8 @@ function normalizeHeader(label) {
   if (s.length <= 30 && !/\s/.test(s)) return s;
   // Dla długich nagłówków: znajdź ostatni token zaczynający się od małej litery
   // (polskie/łacińskie litery), długości >= 2 znaków
-  const re = /[a-ząćęłńóśźż][a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9_]*/g;
+  // Negative lookbehind: nie zaczynaj w środku słowa (np. "rupa" z "Grupa")
+  const re = /(?<![a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ])[a-ząćęłńóśźż][a-zA-ZąćęłńóśźżĄĆĘŁŃÓŚŹŻ0-9_]*/g;
   let last = null;
   let m;
   while ((m = re.exec(s)) !== null) {
