@@ -20,7 +20,7 @@ export default async function handler(req, res) {
   const SHEET_ID = process.env.SHEET_ID;
   if (!SHEET_ID) return res.status(500).json({ error: 'Brak konfiguracji SHEET_ID' });
 
-  const url = `https:
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheet)}&t=${Date.now()}`;
 
   try {
     const response = await fetch(url);
